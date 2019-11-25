@@ -25,17 +25,17 @@ int main(void)
 	
 	/* LED - PB6 & PB7 */
 	GPIOB_LEDInit.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7; // Configuring GPIOB - PB6 & PB7 						
-	GPIOB_LEDInit.GPIO_Mode = GPIO_Mode_OUT; 	   /* Setting GPIOB - PB6 & PB7 as Output Mode 
-											          (GPIOB_MODER: Bit 12 & 13 - MODER6[1:0] + Bit 14 & 15 - MODER7[1:0]) */						
+	GPIOB_LEDInit.GPIO_Mode = GPIO_Mode_OUT;       /* Setting GPIOB - PB6 & PB7 as Output Mode 
+							  (GPIOB_MODER: Bit 12 & 13 - MODER6[1:0] + Bit 14 & 15 - MODER7[1:0]) */						
 	
 	/* TIM2 */
 	TIM2_Init.TIM_Prescaler = 500;
-	TIM2_Init.TIM_Period = 2000; 			  // Auto-Reload Register (TIM2_ARR)
+	TIM2_Init.TIM_Period = 2000; 		  // Auto-Reload Register (TIM2_ARR)
 	TIM_ITConfig(TIM2,TIM_IT_Update,ENABLE); // TIM2 Interrupt Enable (TIM2_DIER: Bit 0 - UIE)
-	TIM_Cmd(TIM2, ENABLE); 					// TIM2 Peripheral Enable (TIM2_CR1: Bit 0 - CEN)
+	TIM_Cmd(TIM2, ENABLE); 			// TIM2 Peripheral Enable (TIM2_CR1: Bit 0 - CEN)
 		
 	/* ----- Initializing Peripherals ----- */
-	GPIO_Init(GPIOB, &GPIOB_LEDInit); 	 // LED - PB6 & PB7
+	GPIO_Init(GPIOB, &GPIOB_LEDInit);    // LED - PB6 & PB7
 	TIM_TimeBaseInit(TIM2, &TIM2_Init); // TIM2
 
   	while (1)
