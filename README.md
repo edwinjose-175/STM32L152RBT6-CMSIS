@@ -1,7 +1,8 @@
 # STM32L152RBT6-CMSIS
-ARM Cortex M3 based STM32L152RBT6 Microcontroller - CMSIS Programming on µVision IDE Keil 5
+ARM Cortex M3 based Microcontroller from ST Microcontrollers - STM32L152RBT6; STM32L - DISCOVERY Board 
+CMSIS (Cortex Microcontroller Software Interface Standard) Programming on µVision IDE Keil 5
 
-This is an attempt at archiving programs written at NIELIT, Calicut during the ED500: PG Diploma in Embedded System Design program,  Batch - August '19 
+This is an attempt at archiving programs written at National Institute of Electronics and Information Technology (NIELIT), Calicut during ED500: PG Diploma in Embedded System Design, Batch - August '19. 
 
 GPIO_LED_CMSIS 
   - LEDs are made to toggle with a software delay
