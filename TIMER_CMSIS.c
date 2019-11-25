@@ -4,7 +4,7 @@
 /* 	Programmed at National Institute of Electronics and Information Technology, Calicut - Embedded Systems Lab 
 	Batch ED500 - August '19 - By Edwin Jose and Rashid P */ 
 
-/* Program to alternatively turn two LEDs ON and OFF when a switch is ON using External Interrupt ISR*/
+/* Program to alternatively turn two LEDs ON and OFF using Timers */
 
 
 #include "stm32l1xx.h"
