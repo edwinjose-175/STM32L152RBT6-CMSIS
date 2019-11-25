@@ -1,0 +1,64 @@
+/* 	ARM Cortex M3 based Microcontroller from ST Microcontrollers - STM32L152RBT6; STM32L - DISCOVERY Board 
+   	CMSIS (Cortex Microcontroller Software Interface Standard) Programming */
+
+/* 	Programmed at National Institute of Electronics and Information Technology, Calicut - Embedded Systems Lab 
+	Batch ED500 - August '19 - By Edwin Jose and Rashid P */ 
+
+/* Program to alternatively turn two LEDs ON and OFF when the a switch is ON using External Interrupt */
+
+#include "my_delay.h"
+#include "stm32l1xx.h"
+
+/* ----- Structure Variable Declarations ----- */
+GPIO_InitTypeDef GPIOA_KeyInit;  // GPIOA Structure Variable
+GPIO_InitTypeDef GPIOB_LEDInit; // GPIOB Structure Variable
+EXTI_InitTypeDef EXTI_PA0Init; // EXTI0 Structure Variable
+
+/* ----- External Interrupt 0 ISR ----- */ 
+void EXTI0_IRQHandler()
+{ /* When PA0 is HIGH, the interrupt is set, and this ISR is called. 
+	 Toggle LEDs at GPIOB Pin 7 (GPIOB_ODR: Bit 7 - ODR7) */
+	 
+	EXTI_ClearITPendingBit(EXTI_Line0); 			   // Clear Interrupt
+	GPIO_ToggleBits(GPIOB, GPIO_Pin_7 | GPIO_Pin_6); 
+	delay(10);										 // Software delay
+	GPIO_ResetBits(GPIOB, GPIO_Pin_7 | GPIO_Pin_6);
+}
+
+int main(void)
+{
+  
+ 	/* ----- Clock Enable ----- */
+ 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);  // GPIOA Clock (RCC_AHBENR: Bit 0 - GPIOAEN)
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE); // GPIOB Clock (RCC_AHBENR: Bit 1 - GPIOBEN)
+
+
+	/* ----- Initializing Pins ----- */
+	
+	/* External Interrupt 0 Key - PA0 */
+	GPIOA_KeyInit.GPIO_Pin = GPIO_Pin_0;     // Configuring GPIOA - PA0 
+	GPIOA_KeyInit.GPIO_Mode = GPIO_Mode_IN; // Setting GPIOA - PA0 as Input Mode (GPIOA_MODER: Bit 0 & 1 - MODER0[1:0])
+	
+	/* LED - PB6 & PB7 */
+	GPIOB_LEDInit.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7; // Configuring GPIOB - PB6 & PB7 					
+	GPIOB_LEDInit.GPIO_Mode = GPIO_Mode_OUT; /* Setting GPIOB - PB6 & PB7 as Output Mode 
+											 (GPIOB_MODER: Bit 12 & 13 - MODER6[1:0] + Bit 14 & 15 - MODER7[1:0]) */	
+	
+	/* External Interrupt */
+	EXTI_PA0Init.EXTI_Line = EXTI_Line0; // Assigning PA0 as external interrupt pin 
+ 	EXTI_PA0Init.EXTI_Mode = EXTI_Mode_Interrupt; 
+  	EXTI_PA0Init.EXTI_Trigger = EXTI_Trigger_Rising; 
+  	EXTI_PA0Init.EXTI_LineCmd = ENABLE;
+	
+	/* ----- Initializing Peripherals ----- */
+	GPIO_Init(GPIOB, &GPIOA_KeyInit);  // External Interrupt 0 Key - PA0
+	GPIO_Init(GPIOA, &GPIOB_LEDInit); // LED - PB6 & PB7
+	EXTI_Init(&EXTI_PA0Init);        // External Interrupt 0
+	
+	NVIC_EnableIRQ(EXTI0_IRQn); // Enabling ARM Cortex M3 NVIC for External Interrupt 0
+  
+  while (1)
+  {
+	/* Infinite Loop */	;
+  }
+}
